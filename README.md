@@ -10,7 +10,7 @@ Screen shot :
 when text is empty:
 
 
-<img src="http://i58.tinypic.com/2z89hm1.png" height="400" width="300"></img>
+<img src="http://i58.tinypic.com/2z89hm1.png" height="500" width="300"></img>
 
 
 
