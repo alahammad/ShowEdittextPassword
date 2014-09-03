@@ -14,3 +14,5 @@ when text is empty:
 
 
 
+
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-ShowEdittextPassword-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/906)
