@@ -16,14 +16,17 @@ Install :
 
 Add the specific repository to your build file:
 
-repositories {
-    maven {
-        url "https://jitpack.io"
+    repositories {
+         maven {
+            url "https://jitpack.io"
+        }
     }
-}
 
-dependencies {
-    compile 'com.github.alahammad:ShowEdittextPassword:1882cf05cf'
-}
+    dependencies {
+       compile 'com.github.alahammad:ShowEdittextPassword:1882cf05cf'
+    }
+
+
+That's it!
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-ShowEdittextPassword-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/906)
