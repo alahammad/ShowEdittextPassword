@@ -3,6 +3,7 @@ package net.ahammad.showhiddenpassword;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ public class ShownEdittext extends RelativeLayout {
     private boolean mIsShowingPassword;
     private boolean mEnabled;
     private boolean mShowButton;
+    private String mHint;
     /**
      * EditText component
      */
@@ -71,6 +73,7 @@ public class ShownEdittext extends RelativeLayout {
                     getContext().obtainStyledAttributes(attrs,R.styleable.ShownEdittext);
             mEnabled = attrsArray.getBoolean(R.styleable.ShownEdittext_android_enabled , true);
             mShowButton = attrsArray.getBoolean(R.styleable.ShownEdittext_showButton, true);
+            mHint = attrsArray.getString(R.styleable.ShownEdittext_android_hint);
         }
         if (mEnabled) {
             editText.addTextChangedListener(new TextWatcher() {
@@ -98,6 +101,9 @@ public class ShownEdittext extends RelativeLayout {
         showpasswordButton = (Button) findViewById(R.id.button_clear);
         showpasswordButton.setVisibility(RelativeLayout.INVISIBLE);
         showpasswordButton.setOnTouchListener(mOnTouchListener);
+        if (!TextUtils.isEmpty(mHint)) {
+            editText.setHint(mHint);
+        }
     }
 
     /**

@@ -18,6 +18,7 @@
         android:id="@+id/view"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
+        android:hint="Password"
     />
 
     <net.ahammad.showhiddenpassword.ShownEdittext
@@ -26,6 +27,7 @@
         android:id="@+id/child_view"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
+        android:hint="Confirm Password"
         app:showButton="false"
     />
 
