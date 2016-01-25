@@ -140,16 +140,18 @@ public class ShownEdittext extends RelativeLayout {
             final int action = event.getAction();
             switch (action) {
                 case MotionEvent.ACTION_DOWN:
-                    mPreviousInputType = editText.getInputType();
-                    mIsShowingPassword = true;
-                    setInputType(EditorInfo.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD, true);
+                    if (mIsShowingPassword) {
+                        mIsShowingPassword = false;
+                        setInputType(mPreviousInputType, true);
+                        mPreviousInputType = -1;
+                    } else {
+                        mPreviousInputType = editText.getInputType();
+                        mIsShowingPassword = true;
+                        setInputType(EditorInfo.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD, true);
+                    }
                     break;
-
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
-                    mIsShowingPassword = false;
-                    setInputType(mPreviousInputType, true);
-                    mPreviousInputType = -1;
                     break;
             }
 
