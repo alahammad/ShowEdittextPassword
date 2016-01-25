@@ -101,6 +101,14 @@ public class ShownEdittext extends RelativeLayout {
     }
 
     /**
+     * Expose the edit text
+     */
+    public EditText getEditText() {
+        return editText;
+    }
+
+
+    /**
      * Get value
      * @return text
      */
