@@ -4,5 +4,6 @@
         <attr name="android:inputType"/>
         <attr name="android:hint"/>
         <attr name="android:enabled"/>
+        <attr name="showButton" format="boolean"/>
     </declare-styleable>
 </resources>

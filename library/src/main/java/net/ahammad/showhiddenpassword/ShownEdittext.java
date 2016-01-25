@@ -18,6 +18,8 @@ import android.widget.RelativeLayout;
  */
 public class ShownEdittext extends RelativeLayout {
     private boolean mIsShowingPassword;
+    private boolean mEnabled;
+    private boolean mShowButton;
     /**
      * EditText component
      */
@@ -62,33 +64,35 @@ public class ShownEdittext extends RelativeLayout {
 
         //pass attributes to EditText, make clearable
         editText = (EditText) findViewById(R.id.edittext);
-        boolean enabled = true;
+        mEnabled = true;
+        mShowButton = true;
         if (attrs != null){
             TypedArray attrsArray =
                     getContext().obtainStyledAttributes(attrs,R.styleable.ShownEdittext);
-//            editText.setInputType(
-//                    attrsArray.getInt(
-//                            R.styleable.ClearableEditText_android_inputType, InputType.TYPE_CLASS_TEXT));
-//            editText.setHint(attrsArray.getString(R.styleable.ClearableEditText_android_hint));
-            enabled = attrsArray.getBoolean(R.styleable.ShownEdittext_android_enabled , true);
+            mEnabled = attrsArray.getBoolean(R.styleable.ShownEdittext_android_enabled , true);
+            mShowButton = attrsArray.getBoolean(R.styleable.ShownEdittext_showButton, true);
         }
-        if (enabled) {
+        if (mEnabled) {
             editText.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if (s.length() > 0)
-                        showpasswordButton.setVisibility(RelativeLayout.VISIBLE);
-                    else
-                        showpasswordButton.setVisibility(RelativeLayout.GONE);
+                    if (mShowButton) {
+                        if (s.length() > 0)
+                            showpasswordButton.setVisibility(RelativeLayout.VISIBLE);
+                        else
+                            showpasswordButton.setVisibility(RelativeLayout.GONE);
+                    }
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {}
             });
-        } else { editText.setEnabled(false); }
+        } else {
+            editText.setEnabled(false);
+        }
 
         //build clear button
         showpasswordButton = (Button) findViewById(R.id.button_clear);
@@ -130,10 +134,41 @@ public class ShownEdittext extends RelativeLayout {
     public void setOnClearListener(OnClickListener listener) {
         onClickClearListener = listener;
     }
+
+
+    private int mPreviousInputType;
+
+    public void showPassword() {
+        mIsShowingPassword = false;
+        setInputType(mPreviousInputType, true);
+        mPreviousInputType = -1;
+        if (null != mOnPasswordDisplayListener) {
+            mOnPasswordDisplayListener.onPasswordShow();
+        }
+    }
+
+    public void hidePassword() {
+        mPreviousInputType = editText.getInputType();
+        mIsShowingPassword = true;
+        setInputType(EditorInfo.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD, true);
+        if (null != mOnPasswordDisplayListener) {
+            mOnPasswordDisplayListener.onPasswordHide();
+        }
+    }
+
+    public interface OnPasswordDisplayListener {
+        public void onPasswordShow();
+        public void onPasswordHide();
+    }
+
+    OnPasswordDisplayListener mOnPasswordDisplayListener;
+
+    public void setOnPasswordDisplayListener(OnPasswordDisplayListener listener) {
+        mOnPasswordDisplayListener = listener;
+    }
+
     // my part
     OnTouchListener mOnTouchListener = new OnTouchListener() {
-
-        private int mPreviousInputType;
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
@@ -141,13 +176,9 @@ public class ShownEdittext extends RelativeLayout {
             switch (action) {
                 case MotionEvent.ACTION_DOWN:
                     if (mIsShowingPassword) {
-                        mIsShowingPassword = false;
-                        setInputType(mPreviousInputType, true);
-                        mPreviousInputType = -1;
+                        showPassword();
                     } else {
-                        mPreviousInputType = editText.getInputType();
-                        mIsShowingPassword = true;
-                        setInputType(EditorInfo.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD, true);
+                        hidePassword();
                     }
                     break;
                 case MotionEvent.ACTION_UP:
