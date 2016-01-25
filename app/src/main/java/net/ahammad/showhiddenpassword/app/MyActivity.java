@@ -1,4 +1,4 @@
-package net.ahammad.showhiddenpassword;
+package net.ahammad.showhiddenpassword.app;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
