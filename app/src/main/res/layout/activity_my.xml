@@ -18,6 +18,7 @@
         android:id="@+id/view"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
+        android:textColorHint="@android:color/black"
         android:hint="Password"
     />
 
@@ -28,6 +29,7 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:hint="Confirm Password"
+        android:textColorHint="@android:color/black"
         app:showButton="false"
     />
 

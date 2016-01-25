@@ -22,6 +22,7 @@ public class ShownEdittext extends RelativeLayout {
     private boolean mEnabled;
     private boolean mShowButton;
     private String mHint;
+    private int mTextColorHint;
     /**
      * EditText component
      */
@@ -74,6 +75,7 @@ public class ShownEdittext extends RelativeLayout {
             mEnabled = attrsArray.getBoolean(R.styleable.ShownEdittext_android_enabled , true);
             mShowButton = attrsArray.getBoolean(R.styleable.ShownEdittext_showButton, true);
             mHint = attrsArray.getString(R.styleable.ShownEdittext_android_hint);
+            mTextColorHint = attrsArray.getInteger(R.styleable.ShownEdittext_android_textColorHint, 0);
         }
         if (mEnabled) {
             editText.addTextChangedListener(new TextWatcher() {
@@ -104,6 +106,7 @@ public class ShownEdittext extends RelativeLayout {
         if (!TextUtils.isEmpty(mHint)) {
             editText.setHint(mHint);
         }
+        editText.setHintTextColor(mTextColorHint);
     }
 
     /**
