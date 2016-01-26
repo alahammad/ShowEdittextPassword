@@ -19,6 +19,7 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:textColorHint="@android:color/black"
+        android:imeOptions="actionNext"
         android:hint="Password"
     />
 
@@ -30,7 +31,14 @@
         android:layout_centerHorizontal="true"
         android:hint="Confirm Password"
         android:textColorHint="@android:color/black"
+        android:imeOptions="actionDone"
         app:showButton="false"
     />
+
+	<Button
+		android:id="@+id/done"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="Done" />
 
 </LinearLayout>
