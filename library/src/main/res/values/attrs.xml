@@ -3,6 +3,9 @@
     <declare-styleable name="ShownEdittext">
         <attr name="android:inputType"/>
         <attr name="android:hint"/>
+        <attr name="android:textColorHint"/>
         <attr name="android:enabled"/>
+        <attr name="android:imeOptions"/>
+        <attr name="showButton" format="boolean"/>
     </declare-styleable>
 </resources>

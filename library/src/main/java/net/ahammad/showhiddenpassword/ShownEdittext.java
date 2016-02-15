@@ -3,6 +3,7 @@ package net.ahammad.showhiddenpassword;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -18,6 +19,11 @@ import android.widget.RelativeLayout;
  */
 public class ShownEdittext extends RelativeLayout {
     private boolean mIsShowingPassword;
+    private boolean mEnabled;
+    private boolean mShowButton;
+    private String mHint;
+    private int mTextColorHint;
+    private int mImeOptions = -1;
     /**
      * EditText component
      */
@@ -62,39 +68,59 @@ public class ShownEdittext extends RelativeLayout {
 
         //pass attributes to EditText, make clearable
         editText = (EditText) findViewById(R.id.edittext);
-        boolean enabled = true;
+        mEnabled = true;
+        mShowButton = true;
         if (attrs != null){
             TypedArray attrsArray =
                     getContext().obtainStyledAttributes(attrs,R.styleable.ShownEdittext);
-//            editText.setInputType(
-//                    attrsArray.getInt(
-//                            R.styleable.ClearableEditText_android_inputType, InputType.TYPE_CLASS_TEXT));
-//            editText.setHint(attrsArray.getString(R.styleable.ClearableEditText_android_hint));
-            enabled = attrsArray.getBoolean(R.styleable.ShownEdittext_android_enabled , true);
+            mEnabled = attrsArray.getBoolean(R.styleable.ShownEdittext_android_enabled , true);
+            mShowButton = attrsArray.getBoolean(R.styleable.ShownEdittext_showButton, true);
+            mHint = attrsArray.getString(R.styleable.ShownEdittext_android_hint);
+            mTextColorHint = attrsArray.getInteger(R.styleable.ShownEdittext_android_textColorHint, 0);
+            mImeOptions = attrsArray.getInteger(R.styleable.ShownEdittext_android_imeOptions, -1);
         }
-        if (enabled) {
+        if (mEnabled) {
             editText.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if (s.length() > 0)
-                        showpasswordButton.setVisibility(RelativeLayout.VISIBLE);
-                    else
-                        showpasswordButton.setVisibility(RelativeLayout.GONE);
+                    if (mShowButton) {
+                        if (s.length() > 0)
+                            showpasswordButton.setVisibility(RelativeLayout.VISIBLE);
+                        else
+                            showpasswordButton.setVisibility(RelativeLayout.GONE);
+                    }
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {}
             });
-        } else { editText.setEnabled(false); }
+        } else {
+            editText.setEnabled(false);
+        }
 
         //build clear button
         showpasswordButton = (Button) findViewById(R.id.button_clear);
         showpasswordButton.setVisibility(RelativeLayout.INVISIBLE);
         showpasswordButton.setOnTouchListener(mOnTouchListener);
+        if (!TextUtils.isEmpty(mHint)) {
+            editText.setHint(mHint);
+        }
+        editText.setHintTextColor(mTextColorHint);
+        if (mImeOptions > -1) {
+            editText.setImeOptions(mImeOptions);
+        }
     }
+
+    /**
+     * Expose the edit text
+     */
+    public EditText getEditText() {
+        return editText;
+    }
+
 
     /**
      * Get value
@@ -130,26 +156,55 @@ public class ShownEdittext extends RelativeLayout {
     public void setOnClearListener(OnClickListener listener) {
         onClickClearListener = listener;
     }
+
+
+    private int mPreviousInputType;
+
+    public void showPassword() {
+        mIsShowingPassword = false;
+        setInputType(mPreviousInputType, true);
+        mPreviousInputType = -1;
+        if (null != mOnPasswordDisplayListener) {
+            mOnPasswordDisplayListener.onPasswordShow();
+        }
+    }
+
+    public void hidePassword() {
+        mPreviousInputType = editText.getInputType();
+        mIsShowingPassword = true;
+        setInputType(EditorInfo.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD, true);
+        if (null != mOnPasswordDisplayListener) {
+            mOnPasswordDisplayListener.onPasswordHide();
+        }
+    }
+
+    public interface OnPasswordDisplayListener {
+        public void onPasswordShow();
+        public void onPasswordHide();
+    }
+
+    OnPasswordDisplayListener mOnPasswordDisplayListener;
+
+    public void setOnPasswordDisplayListener(OnPasswordDisplayListener listener) {
+        mOnPasswordDisplayListener = listener;
+    }
+
     // my part
     OnTouchListener mOnTouchListener = new OnTouchListener() {
-
-        private int mPreviousInputType;
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             final int action = event.getAction();
             switch (action) {
                 case MotionEvent.ACTION_DOWN:
-                    mPreviousInputType = editText.getInputType();
-                    mIsShowingPassword = true;
-                    setInputType(EditorInfo.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD, true);
+                    if (mIsShowingPassword) {
+                        showPassword();
+                    } else {
+                        hidePassword();
+                    }
                     break;
-
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
-                    mIsShowingPassword = false;
-                    setInputType(mPreviousInputType, true);
-                    mPreviousInputType = -1;
                     break;
             }
 

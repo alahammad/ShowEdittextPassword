@@ -1,5 +1,8 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -9,12 +12,33 @@
     tools:context=".MyActivity">
 
 
-    <view
-        android:layout_width="wrap_content"
+    <net.ahammad.showhiddenpassword.ShownEdittext
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        class="net.ahammad.showhiddenpassword.ShownEdittext"
         android:id="@+id/view"
-
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-</RelativeLayout>
+        android:layout_centerHorizontal="true"
+        android:textColorHint="@android:color/black"
+        android:imeOptions="actionNext"
+        android:hint="Password"
+    />
+
+    <net.ahammad.showhiddenpassword.ShownEdittext
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/child_view"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:hint="Confirm Password"
+        android:textColorHint="@android:color/black"
+        android:imeOptions="actionDone"
+        app:showButton="false"
+    />
+
+	<Button
+		android:id="@+id/done"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="Done" />
+
+</LinearLayout>

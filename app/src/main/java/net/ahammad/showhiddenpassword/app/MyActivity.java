@@ -1,9 +1,12 @@
-package net.ahammad.showhiddenpassword;
+package net.ahammad.showhiddenpassword.app;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import net.ahammad.showhiddenpassword.ShownEdittext;
+import net.ahammad.showhiddenpassword.ShownEdittext.OnPasswordDisplayListener;
 
 
 public class MyActivity extends ActionBarActivity {
@@ -12,6 +15,18 @@ public class MyActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
+
+        final ShownEdittext view = (ShownEdittext) findViewById(R.id.view);
+        final ShownEdittext child = (ShownEdittext) findViewById(R.id.child_view);
+        view.setOnPasswordDisplayListener(new OnPasswordDisplayListener() {
+            public void onPasswordShow() {
+                child.showPassword();
+            }
+
+            public void onPasswordHide() {
+                child.hidePassword();
+            }
+        });
     }
 
 
