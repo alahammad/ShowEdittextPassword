@@ -23,7 +23,7 @@ Add the specific repository to your build file:
     }
 
     dependencies {
-       compile 'com.github.alahammad:ShowEdittextPassword:1882cf05cf'
+       compile 'com.github.alahammad:ShowEdittextPassword:9a6e06edfc'
     }
 
 
