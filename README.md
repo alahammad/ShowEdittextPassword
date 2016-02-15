@@ -30,3 +30,5 @@ Add the specific repository to your build file:
 That's it!
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-ShowEdittextPassword-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/906)
+
+[![](https://jitpack.io/v/alahammad/ShowEdittextPassword.svg)](https://jitpack.io/#alahammad/ShowEdittextPassword)
